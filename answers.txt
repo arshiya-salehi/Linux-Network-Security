@@ -1,0 +1,34 @@
+[Q1 — Web servers]
+ips:33.92.125.147, 33.247.152.101, 34.30.235.180, 37.199.226.67, 44.111.85.82, 44.131.48.102, 44.131.51.48, 44.131.51.161, 44.154.102.10, 44.154.102.42, 93.199.112.45, 97.145.19.119, 111.4.186.50, 136.93.4.213, 138.59.102.27, 142.165.192.188, 143.138.4.147, 143.138.66.97, 143.179.11.189, 154.27.68.55, 154.87.109.40, 154.87.109.177, 155.111.186.252, 155.231.237.70, 159.70.229.173, 159.79.22.249, 205.232.201.195, 205.232.201.218, 248.78.109.66, 251.215.76.253, 251.215.153.250, 251.235.172.148.
+method:http.response.code == 200
+
+[Q2 — Directory traversal]
+ip:42.9.203.117
+method:http.request.uri contains ".."
+
+[Q3 — Password guessing (FTP)]
+ip:248.35.162.93
+method:ftp.response.code == 530
+
+[Q4 — Unencrypted credentials]
+username:calrules
+password:thisissosecure
+protocol:FTP
+method:ftp.request.command == "USER" || ftp.request.command == "PASS"
+
+[Q5 — Lowest TLS version]
+server_ip 205.234.49.130
+version:TLSv1
+method:tls.handshake.type == 2
+
+[Q6 — DNS source-port re-use]
+ips:172.27.37.232, 205.232.201.195
+method:dns && !mdns
+
+[Q7 — Predictable TCP ISNs]
+ips:172.27.37.232, 205.232.201.195
+method:tcp.flags.syn == 1
+
+[Q8 — Reflected XSS]
+ip:159.79.22.249
+method:http.request.uri contains "script"
